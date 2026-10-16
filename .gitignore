@@ -1,0 +1,28 @@
+# Virtual Environment
+venv/
+env/
+ENV/
+.env
+
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Experiment raw execution logs and temp files
+*.log
+*cmdlogs*.txt
+*_tmp.png
+metrics_cmd_logs*.txt
+httperf_cmdlogs*.txt
+
+# Ignore downloaded precompiled library bundle if already using CDN in templates
+bootstrap-*-dist/
+
+# Keep project data and documentation
+!live_dashboard.png
+!metrics.csv
+!experiment_metrics.csv
+!*.pdf

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadratic Equation Solver</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="bg-light py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-primary text-white text-center py-3">
+                        <h3 class="mb-0">Quadratic Equation Solver</h3>
+                        <small>Cloud Computing - Assignment 01</small>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <button id="generate-btn" class="btn btn-success btn-lg">Generate & Solve Equation</button>
+                        </div>
+
+                        <!-- Results Container -->
+                        <div id="results" class="d-none">
+                            <div class="alert alert-secondary text-center">
+                                <h4 class="alert-heading">Equation:</h4>
+                                <h3 id="eq-display" class="fw-bold text-primary"></h3>
+                            </div>
+
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <div class="card h-100 bg-white">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-secondary">Coefficients</h5>
+                                            <p class="card-text mb-1"><strong>a:</strong> <span id="val-a"></span></p>
+                                            <p class="card-text mb-1"><strong>b:</strong> <span id="val-b"></span></p>
+                                            <p class="card-text mb-1"><strong>c:</strong> <span id="val-c"></span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card h-100 bg-white">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-secondary">Solution Details</h5>
+                                            <p class="card-text mb-1"><strong>Type:</strong> <span id="sol-type"></span></p>
+                                            <p class="card-text mb-1"><strong>Root(s):</strong> <span id="sol-roots" class="fw-bold"></span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Server Diagnostic Metadata -->
+                            <div class="card border-info">
+                                <div class="card-header bg-info text-white">
+                                    <strong>Server Diagnostics (Load Balancing Metadata)</strong>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text mb-1"><strong>Host Name:</strong> <span id="srv-host"></span></p>
+                                    <p class="card-text mb-0"><strong>IP Address:</strong> <span id="srv-ip"></span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery AJAX Handler -->
+    <script>
+        function loadEquation() {
+            $.ajax({
+                url: '/solve',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#eq-display').text(data.equation);
+                    $('#val-a').text(data.coefficients.a);
+                    $('#val-b').text(data.coefficients.b);
+                    $('#val-c').text(data.coefficients.c);
+                    $('#sol-type').text(data.root_type);
+                    $('#sol-roots').text(data.solutions.join(', '));
+                    $('#srv-host').text(data.server_hostname);
+                    $('#srv-ip').text(data.server_ip);
+
+                    $('#results').removeClass('d-none');
+                },
+                error: function(err) {
+                    alert('Error communicating with the server.');
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            // Load an initial equation on page load
+            loadEquation();
+
+            // Load a new equation on button click
+            $('#generate-btn').click(function() {
+                loadEquation();
+            });
+        });
+    </script>
+</body>
+</html>
