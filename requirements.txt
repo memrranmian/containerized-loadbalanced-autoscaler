@@ -1,2 +1,7 @@
+# Web Application & Production WSGI Server (Docker container runtime)
 Flask>=3.0.0
 gunicorn>=21.2.0
+
+# Telemetry, Monitoring, and Metrics Visualization (Host environment)
+matplotlib>=3.8.0
+pandas>=2.0.0
